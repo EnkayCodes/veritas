@@ -73,7 +73,24 @@ const AppState = {
     // ]
     
     // 🚨 YOUR CODE STARTS HERE:
-    
+    isWalletConnected: false,
+    currentAccount: null,
+    currentNetwork: null,
+
+    selectedOption: null,
+    hasUserVoted: false,
+    currentPoll: null,
+
+    isLoading: false,
+    transactionInProgress: false,
+
+    pollTitle: "Poll Questions",
+
+    pollOptions: [
+        { id: 0, name: "JavaScript", votes: 0 },
+        { id: 1, name: "Python", votes: 0 },
+        { id: 2, name: "C#", votes: 0 },
+    ]
     
     // 🚨 YOUR CODE ENDS HERE
 };
@@ -135,8 +152,8 @@ function showErrorMessage(message) {
     // HINT: console.error('❌ Error:', message);
     
     // 🚨 YOUR CODE STARTS HERE:
-    
-    
+    alert('❌ Error: ' + message);
+    console.error('❌ Error:', message);
     // 🚨 YOUR CODE ENDS HERE
 }
 
@@ -148,7 +165,8 @@ function showSuccessMessage(message) {
     // 3. Log to console for debugging
     
     // 🚨 YOUR CODE STARTS HERE:
-    
+    alert('✅' + message);
+    console.log('✅' + message);
     
     // 🚨 YOUR CODE ENDS HERE
 }
@@ -164,8 +182,14 @@ function formatWalletAddress(address) {
     // HINT: address.length gives you the total length
     
     // 🚨 YOUR CODE STARTS HERE:
+    if(!address){
+        return 'Not Connected';
+    }
     
-    
+    const start = address.substring(0, 6);
+    const end = address.substring(address.length - 4);
+
+    return '${start} ... ${end}';
     // 🚨 YOUR CODE ENDS HERE
 }
 
@@ -195,7 +219,9 @@ function calculateTotalVotes() {
     //       }, 0);
     
     // 🚨 YOUR CODE STARTS HERE:
-    
+    return Appstate.pollOptions.reduce(function(total, option){
+        return total + option.votes;
+    },0 );
     
     // 🚨 YOUR CODE ENDS HERE
 }
@@ -210,7 +236,9 @@ function checkUserVotingStatus() {
     // HINT: Add a console.log to show the status
     
     // 🚨 YOUR CODE STARTS HERE:
-    
+    return Appstate.hasUserVoted = false;
+
+    console.log("User has voted:" + Appstate.hasUserVoted);
     
     // 🚨 YOUR CODE ENDS HERE
 }
