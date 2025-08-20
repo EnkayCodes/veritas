@@ -189,7 +189,7 @@ function formatWalletAddress(address) {
     const start = address.substring(0, 6);
     const end = address.substring(address.length - 4);
 
-    return '${start} ... ${end}';
+    return `${start}...${end}`;
     // 🚨 YOUR CODE ENDS HERE
 }
 
@@ -219,10 +219,10 @@ function calculateTotalVotes() {
     //       }, 0);
     
     // 🚨 YOUR CODE STARTS HERE:
-    return Appstate.pollOptions.reduce(function(total, option){
-        return total + option.votes;
-    },0 );
     
+    return AppState.pollOptions.reduce(function(total, option){
+        return total + option.votes;
+    }, 0);
     // 🚨 YOUR CODE ENDS HERE
 }
 
@@ -236,9 +236,10 @@ function checkUserVotingStatus() {
     // HINT: Add a console.log to show the status
     
     // 🚨 YOUR CODE STARTS HERE:
-    return Appstate.hasUserVoted = false;
+    AppState.hasUserVoted = false;
+    console.log("User has voted:" + AppState.hasUserVoted);
 
-    console.log("User has voted:" + Appstate.hasUserVoted);
+    return AppState.hasUserVoted;
     
     // 🚨 YOUR CODE ENDS HERE
 }
@@ -268,7 +269,9 @@ function updateTotalVotesDisplay() {
     // HINT: element.textContent = `Total Votes: ${total}`;
     
     // 🚨 YOUR CODE STARTS HERE:
-    
+    const element = document.getElementById('total-votes');
+    const total = calculateTotalVotes();
+    element.textContent = `Total Votes: ${total}`;
     
     // 🚨 YOUR CODE ENDS HERE
 }
@@ -413,7 +416,42 @@ Each TODO section will be explained in detail in the STUDENT-GUIDE.md
 // TODO 2.1: Complete the createVotingOptionElement function (Module 2)
 function createVotingOptionElement(option, index) {
     // STUDENT TASK (Module 2): Create HTML elements for voting options
-    // This function will be completed in Module 2
+    // 1. Create a new div element
+    // 2. Add the 'vote-option' CSS class
+    // 3. Set data-option-id attribute
+    // 4. Create the inner HTML structure
+    // 5. Add click event listener
+    
+    // HINT: Use document.createElement('div')
+    // HINT: Use element.setAttribute('data-option-id', option.id)
+    // HINT: Use element.addEventListener('click', function)
+    
+    // Step 1: Create a new div element
+    const optionElement = document.createElement('div');
+
+    // Step 2: Add the 'vote-option' CSS class
+    optionElement.classList.add('vote-option');
+
+    // Step 3: Set data-option-id attribute
+    optionElement.setAttribute('data-option-id', option.id);
+
+    // Step 4: Create the inner HTML structure
+    optionElement.innerHTML = `
+        <div class="vote-option-header">
+            <span class="option-name">${option.name}</span>
+            <span class="vote-count">${option.votes} votes</span>
+        </div>
+        <div class="vote-progress">
+            <div class="vote-progress-fill" style="width: 0%"></div>
+        </div>
+        <div class="vote-percentage">0.0%</div>
+    `;
+    // Step 5: Add click event listener
+    optionElement.addEventListener('click', function() {
+        // Handle the click event (e.g., cast a vote)
+        console.log(`Voting for option: ${option.name}`);
+    });
+
     
     console.log('📝 TODO: Complete this function in Module 2');
     console.log('📖 See STUDENT-GUIDE.md Module 2 for instructions');
@@ -432,7 +470,28 @@ function createVotingOptionElement(option, index) {
 function createVotingOptions() {
     // STUDENT TASK (Module 2): Generate all voting option elements
     console.log('📝 TODO: Complete this function in Module 2');
+    console.log('🎯 Option selected:', optionId);
     
+    // STUDENT TASK:
+    // 1. Check if wallet is connected (use AppState.isWalletConnected)
+    // 2. Check if user has already voted (use AppState.hasUserVoted)
+    // 3. Store the selected option (AppState.selectedOption = optionId)
+    // 4. Update the visual display
+    // 5. Show the vote submission interface
+    
+    // PROVIDED: Error handling examples
+    if (!AppState.isWalletConnected) {
+        showErrorMessage('Please connect your wallet first to vote.');
+        return;
+    }
+
+    if (AppState.isWalletConnected && AppState.hasUserVoted){
+        showErrorMessage('You have already voted.');
+        return;
+    }
+    
+    AppState.selectedOption = optionId
+
     // Placeholder implementation
     const container = document.getElementById('voting-options');
     if (container) {
@@ -440,9 +499,39 @@ function createVotingOptions() {
     }
 }
 
+function updateVoteCounts(selectedOptionId){
+    console.log('updating vote count for: ', selectedOptionId);
+}
+
+function updatePercentages(){
+    console.log("Updating vote percentage... ");
+}
+
 // TODO 2.3: Complete the selectVotingOption function (Module 2)
 function selectVotingOption(optionId) {
     // STUDENT TASK (Module 2): Handle voting option selection
+    // STUDENT TASK:
+    // 1. Find all elements with class 'vote-option'
+    // 2. Loop through each element
+    // 3. Remove 'selected' class from all
+    // 4. Add 'selected' class to chosen option
+    // 5. Update vote counts and percentages
+    
+    // HINT: Use document.querySelectorAll('.vote-option')
+    // HINT: Use element.classList.remove('selected')
+    // HINT: Use element.classList.add('selected')
+    voteOptions.forEach(option => {
+        // 3. Remove 'selected' class from all
+        option.classList.remove('selected');
+
+        if(option.id === optionId){
+            option.classList.add('selected')
+        }
+    });
+    updateVoteCounts(optionId);
+    updatePercentages();
+
+
     console.log('📝 TODO: Complete this function in Module 2');
     console.log('🎯 Option selected:', optionId);
 }
