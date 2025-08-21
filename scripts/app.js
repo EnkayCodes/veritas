@@ -426,13 +426,10 @@ function createVotingOptionElement(option, index) {
     // HINT: Use element.setAttribute('data-option-id', option.id)
     // HINT: Use element.addEventListener('click', function)
     
-    // Step 1: Create a new div element
     const optionElement = document.createElement('div');
 
-    // Step 2: Add the 'vote-option' CSS class
     optionElement.classList.add('vote-option');
 
-    // Step 3: Set data-option-id attribute
     optionElement.setAttribute('data-option-id', option.id);
 
     // Step 4: Create the inner HTML structure
@@ -463,7 +460,7 @@ function createVotingOptionElement(option, index) {
     placeholder.style.border = '2px dashed #ccc';
     placeholder.style.margin = '10px';
     placeholder.style.textAlign = 'center';
-    return placeholder;
+    return div;
 }
 
 // TODO 2.2: Complete the createVotingOptions function (Module 2)
@@ -520,6 +517,9 @@ function selectVotingOption(optionId) {
     // HINT: Use document.querySelectorAll('.vote-option')
     // HINT: Use element.classList.remove('selected')
     // HINT: Use element.classList.add('selected')
+
+    const option = document.querySelectorAll('.voting-options'); 
+
     voteOptions.forEach(option => {
         // 3. Remove 'selected' class from all
         option.classList.remove('selected');
@@ -540,7 +540,10 @@ function selectVotingOption(optionId) {
 function updateVotingOptionsDisplay() {
     // STUDENT TASK (Module 2): Update visual state of voting options
     console.log('📝 TODO: Complete this function in Module 2');
+    selectVotingOption(AppState.selectedOption);  // Pass the selected option ID
+    console.log('Voting options display updated.');
 }
+
 
 // =============================================================================
 // MODULE 3: WEB3 INTEGRATION (TODO SECTIONS)
